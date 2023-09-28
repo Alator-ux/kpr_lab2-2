@@ -1,14 +1,25 @@
-document.addEventListener('DOMContentLoaded',setup)
+import {MiniMaple} from './miniMaple.js';
+
+document.addEventListener('DOMContentLoaded', setup);
 
 function setup() {
-    document.getElementById('demoButton').onclick = addSomething;
+    document.getElementById('submit').onclick = ComputeDerivative;
 }
 
-function addSomething(){
-    const someDummyDiv = document.createElement('div');
-    someDummyDiv.classList.add('generated');
-    const count = document.getElementsByClassName('generated').length;
-    someDummyDiv.innerHTML = `I was created by JS! There are already ${count} of my friends!`;
-    const container = document.getElementById('container');
-    container.appendChild(someDummyDiv);
+function ComputeDerivative() {
+    const polynom = document.getElementById('poly').value;
+    const variable = document.getElementById('sym').value;
+    
+    console.log(polynom.replaceAll(" ", ""), variable.replaceAll(" ", ""))
+
+    const out = document.getElementById('output');
+    try{
+        const mm = new MiniMaple(polynom.replaceAll(" ", ""), variable.replaceAll(" ", ""))
+        out.value = mm.diff();
+    }
+    catch(error){
+        console.log(error.message)
+        alert("Invalid input");
+        return;
+    }
 }
