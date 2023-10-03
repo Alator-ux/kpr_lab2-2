@@ -1,5 +1,4 @@
-import {Num, Variable} from "./Powerable"
-
+const { Num, Variable } = require("./Powerable");
 class Term {
     constructor() { 
         this.reInit()
@@ -17,19 +16,21 @@ class Term {
         this.nums = []
     }
     parse(input) {
-        let lastInd = -1
-        processing = true
+        let processing = true
         while (processing) {
-            let ind = cur.search('*')
+            let ind = input.indexOf('*')
             if (ind == -1) {
-                ind = cur.length
+                ind = input.length
                 processing = false
             }
-            let unknownVal = input.substring(lastInd + 1, ind)
+            let unknownVal = input.substring(0, ind)
 
             let num = new Num()
             let parseRes = num.parse(unknownVal)
             if (parseRes) {
+                if(!processing){
+                    print("che")
+                }
                 this.nums.push(num.copy())
             } else {
                 let variable = new Variable()
@@ -39,6 +40,7 @@ class Term {
                 }
                 this.vars.push(variable.copy())
             }
+            input = input.substring(ind + 1, input.length)
         }
         return true
     }
@@ -76,3 +78,5 @@ class Term {
         return res
     }
 }
+
+module.exports = { Term };

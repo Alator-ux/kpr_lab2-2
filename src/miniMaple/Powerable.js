@@ -1,5 +1,4 @@
-import {parseFloat, isLetter} from "./utils"
-
+const { safeParseFloat, isLetter } = require("./utils");
 class Powerable {
     constructor() {
         this.reInit()
@@ -18,7 +17,7 @@ class Powerable {
         this.pow = null
     }
     parse(input) {
-        let sv = parseFloat(input)
+        let sv = safeParseFloat(input)
         if(!sv.suc || sv.value < 1){
             return false
         }
@@ -32,11 +31,14 @@ class Powerable {
 
 class Num extends Powerable {
     constructor() {
+        super()
         this.reInit()
     }
     static constructorNumPow(num, pow = 1) {
-        this.num = num
-        this.pow = pow
+        let res = new Num()
+        res.num = num
+        res.pow = pow
+        return res
     }
     copy() {
         const copyObj = super.copy();
@@ -48,28 +50,35 @@ class Num extends Powerable {
         super.reInit()
     }
     parse(input) {
-        let powInd = input.search('^')
+        let powInd = input.indexOf('^')
         if (powInd == -1) {
             powInd = input.length
             this.pow = 1
         } else if (!super.parse(input.substring(powInd + 1, input.length))) {
             return false
         }
-        let sv = parseFloat(input.substring(0, powInd))
+        let sv = safeParseFloat(input.substring(0, powInd))
         this.num = sv.value
         return sv.suc
     }
     toString() {
-        return this.num.toString() + '^' + super.toString()
+        let powStr = ''
+        if (this.pow > 1){
+            powStr = '^' + super.toString()
+        }
+        return this.num.toString() + powStr
     }
 }
 class Variable extends Powerable {
     constructor() {
+        super()
         this.reInit()
     }
     static constructorVarPow(variable, pow = 1) {
-        this.variable = variable
-        this.pow = pow
+        let res = new Variable()
+        res.variable = variable
+        res.pow = pow
+        return res
     }
     copy() {
         const copyObj = super.copy();
@@ -81,10 +90,10 @@ class Variable extends Powerable {
         super.reInit()
     }
     parse(input) {
-        if (!isLetter(c)) {
+        if (!isLetter(input[0])) {
             return false
         }
-        let powInd = input.search('^')
+        let powInd = input.indexOf('^')
         if (powInd == -1) {
             powInd = input.length
             this.pow = 1
@@ -109,6 +118,12 @@ class Variable extends Powerable {
         return false
     }
     toString() {
-        return this.variable + '^' + super.toString()
+        let powStr = ''
+        if (this.pow > 1){
+            powStr = '^' + super.toString()
+        }
+        return this.variable + powStr
     }
 }
+
+module.exports = { Powerable, Num, Variable };

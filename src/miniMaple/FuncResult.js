@@ -10,4 +10,4 @@ class IndexOfResult {
         this.char = char
     }
 }
-export{ParseFloatResult, IndexOfResult}
+module.exports = {ParseFloatResult, IndexOfResult}

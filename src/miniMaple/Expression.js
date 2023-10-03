@@ -1,13 +1,14 @@
-import {indexOf} from "./utils"
-import {Term} from "./Term"
+const { indexOf } = require("./utils");
+const { Term } = require("./Term");
+const { Num } = require("./Powerable");
 class Expression {
     constructor(){
         this.reInit()
     }
     parse(input){
-        this.reInit()
+        this.clear()
         input = input.replace(' ', '')
-        processing = true
+        let processing = true
         while (processing){
             let ioRes = indexOf(input, ['+', '-'])
             if(ioRes.ind === -1){
@@ -27,7 +28,7 @@ class Expression {
         return true
     }
     dif(difVar) {
-        if(this.terms.length == 0){
+        if(this.terms.length == 0 || this.terms[0].nums[0].num == 0){
             return
         }
         for(let i = 0; i < this.terms.length - 1; i++){
@@ -40,8 +41,19 @@ class Expression {
         if(!this.terms[i].dif(difVar)){
             this.terms.splice(i, 1)
         }
+        if (this.terms.length == 0){
+            this.reInit()
+        }
     }
     reInit(){
+        this.clear()
+        let t = new Term()
+        let n = new Num()
+        n.num = 0
+        t.nums.push(n)
+        this.terms.push(t)
+    }
+    clear(){
         this.terms = []
         this.sumOps = []
     }
@@ -58,4 +70,4 @@ class Expression {
     }
 }
 
-export {Expression}
+module.exports = {Expression}

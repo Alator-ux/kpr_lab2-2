@@ -1,7 +1,10 @@
-import { ParseFloatResult, IndexOfResult } from "./FuncResult"
-function parseFloat(input) {
-    let value = input.parseFloat()
-    if (value == NaN) {
+const { ParseFloatResult, IndexOfResult  } = require("./FuncResult");
+function safeParseFloat(input) {
+    if(input.length == 0){
+        return new ParseFloatResult(false, 0)
+    }
+    let value = parseFloat(input)
+    if (Number.isNaN(value)) {
         value = null
         return new ParseFloatResult(false, value)
     }
@@ -23,5 +26,4 @@ function indexOf(input, chars) {
     }
     return new IndexOfResult()
 }
-
-export {parseFloat, isDigit, isLetter, indexOf}
+module.exports = {safeParseFloat, isDigit, isLetter, indexOf}
