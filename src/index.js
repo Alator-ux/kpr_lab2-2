@@ -1,25 +1,24 @@
 import {MiniMaple} from './miniMaple.js';
 
 document.addEventListener('DOMContentLoaded', setup);
-
+let miniMaple = new MiniMaple()
 function setup() {
-    document.getElementById('submit').onclick = ComputeDerivative;
+    document.getElementById('difButton').onclick = ComputeDerivative;
 }
 
 function ComputeDerivative() {
+    document.getElementById("difRes").textContent='Empty';
     const polynom = document.getElementById('poly').value;
-    const variable = document.getElementById('sym').value;
+    const variable = document.getElementById('variable').value;
     
     console.log(polynom.replaceAll(" ", ""), variable.replaceAll(" ", ""))
 
-    const out = document.getElementById('output');
-    try{
-        const mm = new MiniMaple(polynom.replaceAll(" ", ""), variable.replaceAll(" ", ""))
-        out.value = mm.diff();
-    }
-    catch(error){
-        console.log(error.message)
-        alert("Invalid input");
+    const out = document.getElementById('difRes');
+    let parseRes = miniMaple.set_expression(polynom);
+    if(!parseRes) {
+        alert("Incorrect input")
         return;
     }
+    miniMaple.dif(variable)
+    document.getElementById("difRes").textContent=miniMaple.get_expression();
 }

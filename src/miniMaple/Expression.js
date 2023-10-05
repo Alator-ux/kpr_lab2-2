@@ -5,30 +5,40 @@ class Expression {
     constructor(){
         this.reInit()
     }
+    #parseHelper(inp_arr, searchFrom){
+        let processing = true
+        let ioRes = indexOf(inp_arr[0], ['+', '-'], searchFrom)
+        if(ioRes.ind === -1){
+            ioRes.ind = inp_arr[0].length
+            processing = false
+        } else{
+            this.sumOps.push(ioRes.char)
+        }
+        let term = new Term()
+        if(!term.parse(inp_arr[0].substring(0, ioRes.ind))){
+            console.log('Term is not parsed')
+            this.reInit()
+            return false
+        }
+        this.terms.push(term.copy())
+        inp_arr[0] = inp_arr[0].substring(ioRes.ind + 1, inp_arr[0].length)
+        return processing
+    }
     parse(input){
         this.clear()
         input = input.replace(' ', '')
         let processing = true
+        let inp_arr = [input]
+        if(input[0] == '-' || input[0] == '+') {
+            processing = this.#parseHelper(inp_arr, 1);
+        }
         while (processing){
-            let ioRes = indexOf(input, ['+', '-'])
-            if(ioRes.ind === -1){
-                ioRes.ind = input.length
-                processing = false
-            } else{
-                this.sumOps.push(ioRes.char)
-            }
-            let term = new Term()
-            if(!term.parse(input.substring(0, ioRes.ind))){
-                this.reInit()
-                return false
-            }
-            this.terms.push(term.copy())
-            input = input.substring(ioRes.ind + 1, input.length)
+            processing = this.#parseHelper(inp_arr, 0)
         }
         return true
     }
     dif(difVar) {
-        if(this.terms.length == 0 || this.terms[0].nums[0].num == 0){
+        if(this.terms.length == 0){
             return
         }
         for(let i = 0; i < this.terms.length - 1; i++){

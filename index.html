@@ -5,17 +5,47 @@
     <meta charset="UTF-8"/>
 
     <script src="src/index.js" type="module"></script>
+
+    <style>
+        .inputsContainer{
+            width: 400;
+            /* height: 100%; */
+        }
+        .inputContainer {
+            height: 100%;
+            width:  100%;
+            background-color: green;
+        }
+    </style>
 </head>
 
 <body>
 <h1>Implement the symbolic diff here</h1>
 <div id="container">
-
 </div>
+
+<div class="inputsContainer">
+    <div class="inputContainer">
+        <label for="poly">Input polynomial</label>
+        <input type="text" id="poly" name="poly" size="20" />
+    </div>
+    
+    <div class="inputContainer">
+        <label for="variable">Input variable</label>
+        <input type="text" id="variable" name="variable" size="5" />    
+    </div>
+</div>
+
 <div>
-    <button id="demoButton">
-        Add something
+    <button id="difButton">
+        Get differential
     </button>
 </div>
+
+<div>
+    <label for="difRes">Differential result: </label>
+    <span id="difRes">Empty</span>
+</div>
+
 </body>
 </html>

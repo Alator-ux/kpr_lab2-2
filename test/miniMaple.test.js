@@ -28,7 +28,13 @@ test('dif without variable', () => {
     exp = minMap.get_expression()
     expect(exp).toBe('4*x^3')
 });
-
+test('x => 1', () => {
+    let minMap = new MiniMaple()
+    minMap.set_expression('x').
+    minMap.dif('x')
+    let exp = minMap.get_expression()
+    expect(exp).toBe('1')
+})
 test('dif with non-existent variable', () => {
     let minMap = new MiniMaple()
     minMap.dif('y')

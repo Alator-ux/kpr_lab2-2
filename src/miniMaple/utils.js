@@ -4,7 +4,7 @@ function safeParseFloat(input) {
         return new ParseFloatResult(false, 0)
     }
     let value = parseFloat(input)
-    if (Number.isNaN(value)) {
+    if (Number.isNaN(value)) { //
         value = null
         return new ParseFloatResult(false, value)
     }
@@ -16,8 +16,8 @@ function isDigit(c) {
 function isLetter(c) {
     return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z'
 }
-function indexOf(input, chars) {
-    for(let i = 0; i < input.length; i++){
+function indexOf(input, chars, searchFrom) {
+    for(let i = searchFrom; i < input.length; i++){
         for(let j = 0; j < chars.length; j++){
             if(input[i] === chars[j]){
                 return new IndexOfResult(i, chars[j])

@@ -18,30 +18,42 @@ class Term {
     parse(input) {
         let processing = true
         while (processing) {
+
             let ind = input.indexOf('*')
             if (ind == -1) {
                 ind = input.length
                 processing = false
             }
+            console.log('ind',ind,'input',input)
             let unknownVal = input.substring(0, ind)
-
             let num = new Num()
             let parseRes = num.parse(unknownVal)
+            console.log('num parse res', parseRes)
             if (parseRes) {
-                if(!processing){
-                    print("che")
+                if(num.num == 0){
+                    this.reInit();
+                    return true;
                 }
                 this.nums.push(num.copy())
             } else {
+                if(input[0] == '-'){
+                    num.num = -1;
+                    num.pow = 1;
+                    this.nums.push(num.copy())
+                    unknownVal = input.substring(1, ind)
+                }
                 let variable = new Variable()
                 if (!variable.parse(unknownVal)) {
+                    console.log('var parse res', false)
                     this.reInit()
                     return false
                 }
+                console.log('var parse res', true)
                 this.vars.push(variable.copy())
             }
             input = input.substring(ind + 1, input.length)
         }
+        console.log('TERM RETURNED')
         return true
     }
     dif(difVar){
@@ -50,13 +62,13 @@ class Term {
         }
         for(let i = 0; i < this.vars.length; i++){
             if(this.vars[i].dif(difVar)){
+                if(this.nums.length == 0) {
+                    this.nums.push(Num.constructorNumPow(1, 1))
+                }
+                this.nums[0].num *= this.vars[i].pow + 1
                 if(this.vars[i].pow == 0){
                     this.vars.splice(i ,1)
-                } else {
-                    if(this.nums.length == 0) {
-                        this.nums.push(Num.constructorNumPow(1, 1))
-                    }
-                    this.nums[0].num *= this.vars[i].pow + 1
+                    console.log(this.toString())
                 }
                 return true
             }
