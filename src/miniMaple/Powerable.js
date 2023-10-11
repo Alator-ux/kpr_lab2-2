@@ -1,4 +1,4 @@
-const { safeParseFloat, isLetter } = require("./utils");
+const { safeParseFloat, isLetter, isDigit } = require("./utils");
 class Powerable {
     constructor() {
         this.reInit()
@@ -62,11 +62,7 @@ class Num extends Powerable {
         return sv.suc
     }
     toString() {
-        let powStr = ''
-        if (this.pow > 1){
-            powStr = '^' + super.toString()
-        }
-        return this.num.toString() + powStr
+        return this.num.toString()
     }
 }
 class Variable extends Powerable {
@@ -90,7 +86,7 @@ class Variable extends Powerable {
         super.reInit()
     }
     parse(input) {
-        if (!isLetter(input[0])) {
+        if (!isLetter(input.at(0))) {
             return false
         }
         let powInd = input.indexOf('^')
@@ -102,7 +98,7 @@ class Variable extends Powerable {
         }
         input = input.substring(0, powInd)
         for (let i = 0; i < input.length; i++) {
-            if(!isLetter(input[i])){
+            if(!(isLetter(input[i]) || isDigit(input[i]))){
                 this.reInit()
                 return false
             }

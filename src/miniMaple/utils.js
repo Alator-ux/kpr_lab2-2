@@ -1,13 +1,23 @@
-const { ParseFloatResult, IndexOfResult  } = require("./FuncResult");
+const { ParseFloatResult, IndexOfResult } = require("./FuncResult");
 function safeParseFloat(input) {
-    if(input.length == 0){
+    if (input.length == 0 || input.at(0) == '.' || input.at(input.length - 1)  == '.') {
         return new ParseFloatResult(false, 0)
     }
-    let value = parseFloat(input)
-    if (Number.isNaN(value)) { //
-        value = null
-        return new ParseFloatResult(false, value)
+    let containsDot = false;
+    for (let i = 0; i < input.length; i++) {
+        if (!isDigit(input.at(i))){
+            if(!containsDot && input.at(i) == '.'){
+                containsDot = true;
+            } else{
+                return new ParseFloatResult(false, 0)
+            }
+        }  
     }
+    let value = parseFloat(input)
+    // if (Number.isNaN(value)) {
+    //     value = null
+    //     return new ParseFloatResult(false, value)
+    // }
     return new ParseFloatResult(true, value)
 }
 function isDigit(c) {
@@ -26,4 +36,4 @@ function indexOf(input, chars, searchFrom) {
     }
     return new IndexOfResult()
 }
-module.exports = {safeParseFloat, isDigit, isLetter, indexOf}
+module.exports = { safeParseFloat, isDigit, isLetter, indexOf }
