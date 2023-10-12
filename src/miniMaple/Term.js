@@ -31,6 +31,7 @@ class Term {
             let parseRes = num.parse(unknownVal)
             console.log('num parse res', parseRes)
             if (parseRes) {
+                console.log('num', num.toString())
                 if (num.num == 0) {
                     this.reInit();
                     return true;
@@ -43,6 +44,7 @@ class Term {
                     num.num = -1;
                     num.pow = 1;
                     this.nums.push(num.copy())
+                    console.log('num pushed')
                     unknownVal = input.substring(1, ind)
                 } else if (input[0] == '+') {
                     unknownVal = input.substring(1, ind)

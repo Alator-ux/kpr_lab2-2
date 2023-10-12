@@ -37,11 +37,21 @@ class Expression {
         }
         let parseRes = true
         let inp_arr = [input]
-        if (input[0] == '-' || input[0] == '+') {
+        if (input.at(0) == '-' || input.at(0) == '+') {
             parseRes = this.#parseHelper(inp_arr, 1);
             if(!parseRes){
                 return false
             }
+            // if(input.at(0) == '-'){
+            //     if(this.terms[0].nums.length > 0) {
+            //         this.terms[0].nums[0].num *= -1
+            //     } else {
+            //         let num = new Num()
+            //         num.pow = 1
+            //         num.num = -1
+            //         this.terms[0].nums.push(num)
+            //     }
+            // }
         }
         while (inp_arr[0].length > 0) {
             parseRes = this.#parseHelper(inp_arr, 0)
@@ -52,9 +62,6 @@ class Expression {
         return true
     }
     dif(difVar) {
-        if (this.terms.length == 0) {
-            return
-        }
         for (let i = 0; i < this.terms.length - 1; i++) {
             if (!this.terms[i].dif(difVar)) {
                 this.terms.splice(i, 1)
@@ -83,9 +90,6 @@ class Expression {
     }
     toString() {
         let res = ''
-        if (this.terms.length == 0) {
-            return res
-        }
         for (let i = 0; i < this.terms.length - 1; i++) {
             res += this.terms[i].toString() + this.sumOps[i]
         }

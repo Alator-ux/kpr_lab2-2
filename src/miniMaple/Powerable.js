@@ -3,11 +3,6 @@ class Powerable {
     constructor() {
         this.reInit()
     }
-    static constructorPow(pow) {
-        let r = new Powerable()
-        r.pow = pow
-        return pow
-    }
     copy() {
         const copyObj = new this.constructor();
         copyObj.pow = this.pow;
@@ -69,12 +64,6 @@ class Variable extends Powerable {
     constructor() {
         super()
         this.reInit()
-    }
-    static constructorVarPow(variable, pow = 1) {
-        let res = new Variable()
-        res.variable = variable
-        res.pow = pow
-        return res
     }
     copy() {
         const copyObj = super.copy();
